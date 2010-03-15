@@ -1,8 +1,18 @@
 $(function() {
   $('#noteSubmitter').click(function(event) {submitNote(); event.preventDefault();}); //clicking on the submit button creates a note
   $('#noteCreateForm').submit(function(event) {submitNote(); event.preventDefault();}); //pressing enter on the text input creates a note
-  setupDatabase();
-  getNotes();
+  if($.html5.supportsOffline()) {
+    setupDatabase();
+    getNotes();    
+  } else {
+    $('body').append("Oh noes, I do not support offline DB storage!")
+  }
+  
+  if($.html5.supportsLocalStorage()) {
+    //do something
+  } else {
+    $('body').append("How tragic!  I do not support local storage!")
+  }
 });
 
 function setupDatabase() {
