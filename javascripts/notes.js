@@ -98,7 +98,7 @@ Notes.prototype = {
     logger("getting notes")
     that = this
     this.notesDB.each(function(note) {that.onNoteGet(note, that.notes_list)})
-  },
+  }
 
 }
 
@@ -106,7 +106,7 @@ function logger(text) {
   if (!!window.console && !!window.console.log) {
     console.log(text)
   } else {
-    $("#logger").append(text)
+    $("#logger").append(text + "<br/>")
   }
   
 }
