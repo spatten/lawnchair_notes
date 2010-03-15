@@ -1,12 +1,12 @@
 $(function() {
   var adaptor = $.html5.supportsOffline() ? 'webkit' : 'gears'
-  note = new Note(adaptor)
+  notes = new Notes(adaptor)
 
-  note.getNotes();    
+  notes.getNotes();    
 
-  $('#noteSubmitter').click(function(event) {note.submitNote(); event.preventDefault();}); //clicking on the submit button creates a note
-  $('#noteCreateForm').submit(function(event) {note.submitNote(); event.preventDefault();}); //pressing enter on the text input creates a note
-
+  $('#noteSubmitter').click(function(event) {notes.save(); event.preventDefault();}); //clicking on the submit button creates a note
+  $('#noteCreateForm').submit(function(event) {notes.save(); event.preventDefault();}); //pressing enter on the text input creates a note
+  $('#newNote').click(function(event) {notes.editNew(); event.preventDefault();})
   
   if($.html5.supportsLocalStorage()) {
     //do something
@@ -15,21 +15,11 @@ $(function() {
   }
 });
 
-var Note = function(adaptor) {
+var Notes = function(adaptor) {
   this.init(adaptor)
 }
 
-Note.onNoteSelect = function(note, notes_list) {
-  logger("adding to notes list: " + note.title)
-  notes_list.append("<li>"+ note.title + ": " + note.text +"</li>"    )
-}
-
-Note.onNoteSave = function(note, notes_list) {
-  logger("the new note has a title of " + note.title + " and a key of " + note.key)
-  Note.onNoteSelect(note, notes_list)
-}
-
-Note.prototype = {
+Notes.prototype = {
   
   init:function(adaptor) {
     this.adaptor = adaptor
@@ -42,19 +32,72 @@ Note.prototype = {
     this.notesDB = new Lawnchair({table: 'notes', adaptor: this.adaptor})
     this.versionDB = new Lawnchair({table: 'version', adaptor: this.adaptor})
   },
+  
+  onNoteGet: function(note, notes_list) {
+    var li = $("li[key='" + note.key+ "']")
+    if(li.length > 0) {
+      $('.title', li).html(note.title)
+    } else {
+      li = $("<li key="+ note.key + "><span class='title'>"+ note.title + "</span>&nbsp;<a href='#' class='note_edit_link'>edit</a>&nbsp;<a href='#' class='note_delete_link'>delete</a></li>")
+      $('.note_edit_link', li).click(function(event) {notes.edit(note.key); event.preventDefault();})
+      $('.note_delete_link', li).click(function(event) {notes.destroy(li, note.key); event.preventDefault();})
+      notes_list.append(li)
+    }
+    
+  },
+  
+  edit: function(key) {
+    that = this
+    var note = this.notesDB.get(key, function(note) {that.onNoteEdit(note)})
+  },
+  
+  onNoteEdit: function(note) {
+    $('#noteKey').val(note.key)
+    logger('editing note ' + note.key)
+    $('#titleText').val(note.title)
+    $('#bodyText').val(note.text)
+  },
 
-  submitNote:function() {
+  save:function() {
     var title = $('#titleText').val();
     var text = $('#bodyText').val();
-    logger("saving note " + title) 
+    var key = $('#noteKey').val();
+    if (key == '') {
+      key = null
+    }
+    logger("saving note " + title)
+    logger(" key = " + key)
     that = this
-    this.notesDB.save({title: title, text: text}, function(note) {Note.onNoteSave(note, that.notes_list)})
+    this.notesDB.save({key: key, title: title, text: text}, function(note) {that.onNoteSave(note, that.notes_list)})
+  },
+  
+  onNoteSave: function(note, notes_list) {
+    logger("the new note has a title of " + note.title + " and a key of " + note.key)
+    this.onNoteGet(note, this.notes_list)
+  },
+  
+  destroy:function(li, key) {
+    logger("removing note with key = " + key)
+    that = this
+    this.notesDB.remove(key, function(note) {that.onNoteDestroy(li, key)})
+  },
+  
+  onNoteDestroy: function(li, key) {
+    logger("I just deleted a note with key = " + key)
+    li.remove()
+    this.editNew()
+  },
+  
+  editNew: function() {
+    $('#noteKey').val('')
+    $('#titleText').val('')
+    $('#bodyText').val('')
   },
 
   getNotes:function(notes_list) {
     logger("getting notes")
     that = this
-    this.notesDB.each(function(note) {Note.onNoteSelect(note, that.notes_list)})
+    this.notesDB.each(function(note) {that.onNoteGet(note, that.notes_list)})
   },
 
 }

@@ -13,7 +13,8 @@
     <form id="noteCreateForm">
       <label for="titleText">Title</label><br /><input type="text" id="titleText" /><br/>
       <label for="bodyText">Body</label><br /><textarea id="bodyText" rows='20' cols = '100'></textarea><br />
-      <input type="button" value="submit" id="noteSubmitter"/>
+      <input type="hidden" id="noteKey" />
+      <input type="button" value="Save" id="noteSubmitter"/> <input type="button" value="New" id="newNote"/>
     </form>
     <div id="results">
       <h1>List of Notes</h1>
