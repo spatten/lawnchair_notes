@@ -8,11 +8,13 @@
     <script type="text/javascript" src="javascripts/adaptors/GearsSQLiteAdaptor.js"></script>
     <script type="text/javascript" src="javascripts/jquery.html5.js"></script>
     <script type="text/javascript" src="javascripts/notes.js"></script>
+    <link rel='stylesheet' href='/notes.css' type='text/css' />
   </head>
   <body>
+    <h1>Notes: an example Lawnchair application</h1>
     <form id="noteCreateForm">
       <label for="titleText">Title</label><br /><input type="text" id="titleText" /><br/>
-      <label for="bodyText">Body</label><br /><textarea id="bodyText" rows='20' cols = '100'></textarea><br />
+      <label for="bodyText">Body</label><br /><textarea id="bodyText" rows='15'></textarea><br />
       <input type="hidden" id="noteKey" />
       <input type="button" value="Save" id="noteSubmitter"/> <input type="button" value="New" id="newNote"/>
     </form>

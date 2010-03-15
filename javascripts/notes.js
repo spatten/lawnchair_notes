@@ -38,7 +38,7 @@ Notes.prototype = {
     if(li.length > 0) {
       $('.title', li).html(note.title)
     } else {
-      li = $("<li key="+ note.key + "><span class='title'>"+ note.title + "</span>&nbsp;<a href='#' class='note_edit_link'>edit</a>&nbsp;<a href='#' class='note_delete_link'>delete</a></li>")
+      li = $("<li key="+ note.key + "><span class='title'>"+ note.title + "</span><span class='edit_links'><a href='#' class='note_edit_link'>edit</a>&nbsp;<a href='#' class='note_delete_link'>delete</a></span></li>")
       $('.note_edit_link', li).click(function(event) {notes.edit(note.key); event.preventDefault();})
       $('.note_delete_link', li).click(function(event) {notes.destroy(li, note.key); event.preventDefault();})
       notes_list.append(li)

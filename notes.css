@@ -1,0 +1,20 @@
+body {
+  margin: 20px;
+}
+
+#titleText {
+  width: 40em;
+}
+#bodyText {
+  width: 40em;
+}
+
+#notesList ul li {
+  list-style: none;  
+  width: 20em;
+  margin-bottom: 0.2em;
+}
+
+#notesList ul li span.edit_links {
+  float:right;
+}
