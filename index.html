@@ -2,6 +2,10 @@
   <head>
     <title>Notes</title>
     <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="javascripts/Lawnchair.js"></script>
+    <script type="text/javascript" src="javascripts/adaptors/LawnchairAdaptorHelpers.js"></script>
+    <script type="text/javascript" src="javascripts/adaptors/WebkitSQLiteAdaptor.js"></script>
+    <script type="text/javascript" src="javascripts/adaptors/GearsSQLiteAdaptor.js"></script>
     <script type="text/javascript" src="javascripts/jquery.html5.js"></script>
     <script type="text/javascript" src="javascripts/notes.js"></script>
   </head>
@@ -13,7 +17,9 @@
     </form>
     <div id="results">
       <h1>List of Notes</h1>
-      <div id="notesList"></div>
+      <div id="notesList">
+        <ul></ul>
+      </div>
     </div>
     <p id="logger"></p>
   </body>
