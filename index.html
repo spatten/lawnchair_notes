@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Notes</title>
+    <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="javascripts/jquery.html5.js"></script>
+    <script type="text/javascript" src="javascripts/notes.js"></script>
+  </head>
+  <body>
+    <form id="noteCreateForm">
+      <label for="titleText">Title</label><br /><input type="text" id="titleText" /><br/>
+      <label for="bodyText">Body</label><br /><textarea id="bodyText" rows='20' cols = '100'></textarea><br />
+      <input type="button" value="submit" id="noteSubmitter"/>
+    </form>
+    <div id="results">
+      <h1>List of Notes</h1>
+      <div id="notesList"></div>
+    </div>
+    <p id="logger"></p>
+  </body>
+</html>
