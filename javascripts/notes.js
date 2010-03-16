@@ -90,7 +90,7 @@ Notes.prototype = {
   
   editNew: function() {
     $('#noteKey').val('')
-    $('#titleText').val('')
+    $('#titleText').val('').focus().select()
     $('#bodyText').val('')
   },
 
