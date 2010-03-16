@@ -54,7 +54,7 @@ Notes.prototype = {
   onNoteEdit: function(note) {
     $('#noteKey').val(note.key)
     logger('editing note ' + note.key)
-    $('#titleText').val(note.title)
+    $('#titleText').val(note.title).focus().select()
     $('#bodyText').val(note.text)
   },
 
