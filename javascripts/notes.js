@@ -8,11 +8,6 @@ $(function() {
   $('#noteCreateForm').submit(function(event) {notes.save(); event.preventDefault();}); //pressing enter on the text input creates a note
   $('#newNote').click(function(event) {notes.editNew(); event.preventDefault();})
   
-  if($.html5.supportsLocalStorage()) {
-    //do something
-  } else {
-    $('body').append("How tragic!  I do not support local storage!")
-  }
 });
 
 var Notes = function(adaptor) {
@@ -21,16 +16,10 @@ var Notes = function(adaptor) {
 
 Notes.prototype = {
   
-  init:function(adaptor) {
+  init: function(adaptor) {
     this.adaptor = adaptor
     this.notes_list = $('#notesList > ul')
-    this.setupDatabase()
-  },
-  
-  setupDatabase:function() {
-    logger("getting DB")
     this.notesDB = new Lawnchair({table: 'notes', adaptor: this.adaptor})
-    this.versionDB = new Lawnchair({table: 'version', adaptor: this.adaptor})
   },
   
   onNoteGet: function(note, notes_list) {
@@ -43,7 +32,6 @@ Notes.prototype = {
       $('.note_delete_link', li).click(function(event) {notes.destroy(li, note.key); event.preventDefault();})
       notes_list.append(li)
     }
-    
   },
   
   edit: function(key) {
@@ -52,13 +40,13 @@ Notes.prototype = {
   },
   
   onNoteEdit: function(note) {
+    logger('editing note ' + note.key)    
     $('#noteKey').val(note.key)
-    logger('editing note ' + note.key)
     $('#titleText').val(note.title).focus().select()
     $('#bodyText').val(note.text)
   },
 
-  save:function() {
+  save: function() {
     var title = $('#titleText').val();
     var text = $('#bodyText').val();
     var key = $('#noteKey').val();
@@ -76,14 +64,13 @@ Notes.prototype = {
     this.onNoteGet(note, this.notes_list)
   },
   
-  destroy:function(li, key) {
+  destroy: function(li, key) {
     logger("removing note with key = " + key)
     that = this
-    this.notesDB.remove(key, function(note) {that.onNoteDestroy(li, key)})
+    this.notesDB.remove(key, function(note) {that.onNoteDestroy(li)})
   },
   
-  onNoteDestroy: function(li, key) {
-    logger("I just deleted a note with key = " + key)
+  onNoteDestroy: function(li) {
     li.remove()
     this.editNew()
   },
@@ -94,8 +81,7 @@ Notes.prototype = {
     $('#bodyText').val('')
   },
 
-  getNotes:function(notes_list) {
-    logger("getting notes")
+  getNotes: function(notes_list) {
     that = this
     this.notesDB.each(function(note) {that.onNoteGet(note, that.notes_list)})
   }
